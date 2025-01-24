@@ -35,4 +35,7 @@ jobs:
 
       - name: Test style
         run: test -z $(go fmt ./...)
+      
+      - name: Format code
+        run: go fmt ./...
 
