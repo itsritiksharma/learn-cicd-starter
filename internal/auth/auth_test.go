@@ -1,46 +1,47 @@
 package auth
+
 import (
 	"errors"
 	"net/http"
-  "testing"
+	"testing"
 )
 
 func TestGetAPIKey(t *testing.T) {
 	tests := []struct {
-		name           string
-		headers        http.Header
-		expectedKey    string
-		expectedErr    error
+		name        string
+		headers     http.Header
+		expectedKey string
+		expectedErr error
 	}{
 		{
-			name:           "No Authorization Header",
-			headers:        http.Header{},
-			expectedKey:    "",
-			expectedErr:    ErrNoAuthHeaderIncluded,
+			name:        "No Authorization Header",
+			headers:     http.Header{},
+			expectedKey: "",
+			expectedErr: ErrNoAuthHeaderIncluded,
 		},
 		{
-			name:           "Malformed Authorization Header (no space)",
-			headers:        http.Header{"Authorization": []string{"ApiKey12345"}},
-			expectedKey:    "",
-			expectedErr:    errors.New("malformed authorization header"),
+			name:        "Malformed Authorization Header (no space)",
+			headers:     http.Header{"Authorization": []string{"ApiKey12345"}},
+			expectedKey: "",
+			expectedErr: errors.New("malformed authorization header"),
 		},
 		{
-			name:           "Malformed Authorization Header (wrong scheme)",
-			headers:        http.Header{"Authorization": []string{"Bearer 12345"}},
-			expectedKey:    "",
-			expectedErr:    errors.New("malformed authorization header"),
+			name:        "Malformed Authorization Header (wrong scheme)",
+			headers:     http.Header{"Authorization": []string{"Bearer 12345"}},
+			expectedKey: "",
+			expectedErr: errors.New("malformed authorization header"),
 		},
 		{
-			name:           "Correct Authorization Header",
-			headers:        http.Header{"Authorization": []string{"ApiKey 12345"}},
-			expectedKey:    "12345",
-			expectedErr:    nil,
+			name:        "Correct Authorization Header",
+			headers:     http.Header{"Authorization": []string{"ApiKey 12345"}},
+			expectedKey: "12345",
+			expectedErr: nil,
 		},
 		{
-			name:           "Empty API Key",
-			headers:        http.Header{"Authorization": []string{"ApiKey "}},
-			expectedKey:    "",
-			expectedErr:    errors.New("malformed authorization header"),
+			name:        "Empty API Key",
+			headers:     http.Header{"Authorization": []string{"ApiKey "}},
+			expectedKey: "",
+			expectedErr: errors.New("malformed authorization header"),
 		},
 	}
 
